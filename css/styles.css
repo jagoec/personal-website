@@ -1,29 +1,70 @@
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
+/* Base Styles */
+* {
   margin: 0;
   padding: 0;
-  background: #f9f9f9;
-  color: #333;
+  box-sizing: border-box;
 }
-header {
-  background: #333;
-  color: #fff;
-  padding: 1rem;
-  text-align: center;
-}
-main {
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #0f1117;
+  color: #f5f6fa;
+  line-height: 1.6;
   padding: 2rem;
 }
-article {
-  background: #fff;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+a {
+  color: #58a6ff;
+  text-decoration: none;
 }
-footer {
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Layout */
+header, footer {
   text-align: center;
-  padding: 1rem;
-  background: #eee;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+nav a {
+  margin: 0 0.5rem;
+  font-size: 1rem;
+}
+
+main {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+article {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-left: 3px solid #58a6ff;
+  background-color: #1a1c23;
+  border-radius: 8px;
+}
+
+.date {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.read-more {
+  display: inline-block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+footer {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 3rem;
 }
