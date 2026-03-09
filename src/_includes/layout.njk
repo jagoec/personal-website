@@ -1,18 +1,38 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>{{ title }}</title>
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-<nav>
-  <a href="/">Home</a>
-  <a href="/about/">About</a>
-  <a href="/books/">Books</a>
-</nav>
-<main>
-{{ content | safe }}
-</main>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about/">About</a>
+            <a href="/books/">Books</a>
+        </nav>
+        <main>
+            {{ content | safe }}
+        </main>
+        <script>
+            document.querySelectorAll("th").forEach((header, colIndex) => {
+                header.addEventListener("click", () => {
+                    const table = header.closest("table");
+                    const tbody = table.querySelector("tbody") || table;
+                    const rows = Array.from(tbody.querySelectorAll("tr")).slice(0);
+
+                    const asc = header.classList.toggle("asc");
+                    header.classList.toggle("desc", !asc);
+
+                    rows.sort((a, b) => {
+                        const A = a.children[colIndex].innerText.toLowerCase();
+                        const B = b.children[colIndex].innerText.toLowerCase();
+                        return asc ? A.localeCompare(B) : B.localeCompare(A);
+                    });
+
+                    rows.forEach(row => tbody.appendChild(row));
+                });
+            });
+        </script>
+    </body>
 </html>
