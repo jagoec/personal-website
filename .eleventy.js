@@ -1,7 +1,7 @@
 module.exports = function(eleventyConfig) {
   // Copy CSS from src/public directly to root of output
   eleventyConfig.addPassthroughCopy({
-    "src/public/": "/"
+    "src/css/": "/"
   });
 
   return {
