@@ -121,3 +121,16 @@ table td {
 table tbody tr:hover {
   background-color: #fdf6e3;
 }
+.book {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 0.5em;
+  margin-left: 12px;
+  margin-bottom: 4px;
+}
+.book .title {
+  font-weight: bold;
+}
+.book .author {
+  justify-self: left;
+}

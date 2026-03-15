@@ -14,17 +14,17 @@ module.exports= async function() {
   // sort by date
   records.sort((a, b) => new Date(a.Finished) - new Date(b.Finished));
 
-  // Build a Markdown table string for templates
-  const header = "| Title | Author | Month Read | Notes |\n" +
-    "| ----- | ------ | ---------- | ----- |\n";
+  // // Build a Markdown table string for templates
+  // const header = "| Title | Author | Month Read | Notes |\n" +
+  //   "| ----- | ------ | ---------- | ----- |\n";
 
-  const rows = records
-    .map((book) =>
-      `| ${book.Title} | ${book.Author} | ${book.Finished} | ${book.Notes} |`
-    )
-    .join("\n");
+  // const rows = records
+  //   .map((book) =>
+  //     `| ${book.Title} | ${book.Author} | ${book.Finished} | ${book.Notes} |`
+  //   )
+  //   .join("\n");
 
-  records.books_table = header + rows;
+  // records.books_table = header + rows;
 
   console.log("Books loaded:", records.length);
   return records;
