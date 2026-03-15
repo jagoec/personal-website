@@ -4,6 +4,8 @@
   "description": "host my personal website- vibe code",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "start": "eleventy --serve",
     "build": "eleventy",
     "serve": "eleventy --serve",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,6 +23,17 @@
   },
   "homepage": "https://github.com/jagoec/personal-website#readme",
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.2"
+    "@11ty/eleventy": "^3.1.2",
+    "markdown-it": "^14.1.1",
+    "markdown-it-table-of-contents": "^1.1.0"
+  },
+  "dependencies": {
+    "csv-parse": "^6.1.0",
+    "node-fetch": "^3.3.2",
+    "only-allow": "^1.2.2"
+  },
+  "engines": {
+   "npm": "please-use-pnpm",
+   "pnpm": ">= 10.0.0"
   }
 }
