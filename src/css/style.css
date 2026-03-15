@@ -121,6 +121,24 @@ table td {
 table tbody tr:hover {
   background-color: #fdf6e3;
 }
+
+/* List styles */
+ul, ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+li ul, li ol {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Image styles */
+main img {
+  max-width: 100%;
+  height: auto;
+}
+
 .book {
   display: grid;
   grid-template-columns: 1fr 1fr;

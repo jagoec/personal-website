@@ -28,12 +28,14 @@
     "markdown-it-table-of-contents": "^1.1.0"
   },
   "dependencies": {
+    "@11ty/eleventy-img": "^6.0.4",
     "csv-parse": "^6.1.0",
+    "luxon": "^3.7.2",
     "node-fetch": "^3.3.2",
     "only-allow": "^1.2.2"
   },
   "engines": {
-   "npm": "please-use-pnpm",
-   "pnpm": ">= 10.0.0"
+    "npm": "please-use-pnpm",
+    "pnpm": ">= 10.0.0"
   }
 }
