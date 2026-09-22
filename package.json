@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@11ty/eleventy-img": "^6.0.4",
+    "@vercel/analytics": "^2.0.1",
     "csv-parse": "^6.1.0",
     "luxon": "^3.7.2",
     "node-fetch": "^3.3.2",
