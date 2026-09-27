@@ -1,0 +1,5 @@
+module.exports = {
+  name: "Christopher Jagoe",
+  url: "https://christopherjagoe.com",
+  description: "Christopher Jagoe's personal website — projects, reading, and a backyard garden journal."
+};
