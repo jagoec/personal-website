@@ -5,8 +5,8 @@ Repo: https://github.com/jagoec/personal-website
 
 ## Commands
 
-- `pnpm build` — build the site into `_site/`
-- `pnpm start` or `pnpm serve` — local dev server with live reload
+- `pnpm build` — build the site into `_site/` **and run Pagefind** to generate the client-side search index (`_site/pagefind/`)
+- `pnpm start` or `pnpm serve` — local dev server with live reload (**no search** — Pagefind only runs on `pnpm build`)
 - `pnpm og:image` — regenerate `src/img/og-default.png` (then commit it)
 - **pnpm only** (enforced by a preinstall hook); never use npm or yarn
 - `pnpm-workspace.yaml` allows sharp's install script (needed by eleventy-img and the og:image script).
@@ -17,22 +17,24 @@ Repo: https://github.com/jagoec/personal-website
 - Eleventy 3, CommonJS. All config lives in `.eleventy.js` at the repo root.
 - Input: `src/` — output: `_site/` (gitignored). Templates are Nunjucks + Markdown.
 - Markdown files are processed through Nunjucks (`markdownTemplateEngine: "njk"`), so `{% ... %}` template syntax works inside `.md` content.
-- `src/_includes/layout.njk` — the single shared layout and nav (Home / About / Books). The Garden page and posts still build, but are intentionally NOT linked in the nav (hidden, reachable only by direct URL) — do not re-add the link. The `<head>` carries SEO/OG meta (from `src/_data/site.js`) plus the Vercel Web Analytics snippet — do not remove either.
+- `src/_includes/layout.njk` — the base layout and nav (Home / About / Books / Blog). The `<head>` carries SEO/OG meta (from `src/_data/site.js`) plus the Vercel Web Analytics snippet — do not remove either.
+- `src/_includes/post.njk` — blog post layout: title/date/tags header, `data-pagefind-body` (so Pagefind indexes posts), tag spans with `data-pagefind-filter="tags"`.
+- `src/blog.md` — blog landing: Pagefind Component UI search (input + tag filter dropdown + results) and the full post list.
+- `src/blog/*.md` — blog posts. Garden posts are blog posts tagged `garden` and are fully public.
 - `src/_data/site.js` — site name / URL / default description; single source of truth for SEO tags.
-- `src/sitemap.njk` — builds `/sitemap.xml`; excludes `/garden/*` (intentional — do not re-add).
+- `src/sitemap.njk` — builds `/sitemap.xml` from all pages.
 - `src/robots.txt` — allows all crawlers, points to the sitemap.
-- `vercel.json` — sends `X-Robots-Tag: noindex` on `/garden/*` so search engines skip garden pages (intentional — do not remove).
+- `vercel.json` — sets the Vercel build command: `npx eleventy && npx pagefind --site _site`.
 - `scripts/og-image.js` + `src/img/og-default.png` — default Open Graph card (Solarized Light); regenerate with `pnpm og:image` and commit the PNG.
-- `src/css/style.css` — the only stylesheet, passthrough-copied to `/style.css`. Solarized Light color palette.
 - `src/_data/books.js` — fetches a published Google Sheet as CSV **at build time** (needs network); columns: Title, Author, Finished, Notes. Feeds the Books page.
-- `src/garden/*.md` — garden journal posts, with images passthrough-copied from `src/garden/`.
 
 ## Conventions
 
-- Garden posts: `src/garden/garden-YYYYMMDD.md` with `title` and `date` (YYYY-MM-DD) frontmatter. Dates are interpreted in America/New_York; render them with the `readableDate` filter.
-- URLs are directory-style: `/about/`, `/books/`, `/garden/<post-slug>/`.
-- The `image` shortcode (`.eleventy.js`) generates optimized responsive WebP/JPEG — it **throws if `alt` text is missing**. Always pass alt text.
-- Excerpts for garden posts are auto-extracted from the first paragraphs if not set in frontmatter.
+- Blog posts: `src/blog/<slug>.md` with frontmatter `title`, `date` (YYYY-MM-DD), `layout: post.njk`, and free-form `tags` (e.g. `[garden]`). Dates render with the `readableDate` filter (America/New_York).
+- Search: Pagefind Component UI on the blog page; only post pages are indexed. The tag filter dropdown populates after the first search interaction (Pagefind behavior without faceted mode).
+- URLs are directory-style: `/about/`, `/blog/<post-slug>/`.
+- The `image` shortcode (`.eleventy.js`) generates optimized responsive WebP/JPEG — it **throws if `alt` text is missing**. Always pass alt text. Post images passthrough-copy from `src/blog/`.
+- Excerpts for posts are auto-extracted from the first paragraph if not set in frontmatter.
 - Per-page SEO overrides via frontmatter: `description:` (falls back to excerpt, then site default) and `image:` (falls back to `/img/og-default.png`).
 - `showStats: true` frontmatter adds an automatic word/character count line to the page (layout.njk + `wordCount`/`charCount` filters in `.eleventy.js`).
 
