@@ -30,6 +30,9 @@
         </nav>
         <main>
             {{ content | safe }}
+            {% if showStats %}
+            <p class="page-stats">This about page contains {{ content | wordCount }} words, {{ content | charCount }} characters.</p>
+            {% endif %}
         </main>
     </body>
 </html>

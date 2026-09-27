@@ -79,6 +79,13 @@ article {
   margin-bottom: 0.5rem;
 }
 
+.page-stats {
+  color: #93a1a1;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
 .read-more {
   display: inline-block;
   margin-top: 1rem;
