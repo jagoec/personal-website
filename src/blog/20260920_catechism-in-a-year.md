@@ -6,6 +6,8 @@ layout: post.njk
 tags: [projects]
 ---
 
+\[AI-Generated Post\]
+
 I've been reading the Catechism of the Catholic Church on a 365-day plan (paragraphs 1–2865, following the *Catechism in a Year* reading order). The existing apps didn't quite fit how I wanted to read, so I built my own — a personal iPhone reader that lives as a home-screen widget plus a full-screen reading app.
 
 It's built on [Scriptable](https://scriptable.app): a single ~860-line JavaScript file that runs in two modes. As a widget it shows today's section, my progress, and whether I'm on schedule. As a full-screen reader it shows the day's paragraphs with inline footnote citations, cross-references as overlays, a jump-to-day picker, adjustable font size, and light/dark themes. The full catechism text — all 2,865 paragraphs, scraped from vatican.va — is baked into the data files, so it works entirely offline.

@@ -5,6 +5,7 @@ permalink: /blog/mass-aggregator/
 layout: post.njk
 tags: [projects]
 ---
+\[AI-Generated Post\]
 
 Last weekend I built [Mass Aggregator](https://masstimes.christopherjagoe.com) — Catholic Mass times on a map. It started as a quick proof of concept covering four parishes in Westerly, RI, and by the end of the weekend it had grown into a scraper covering the entire Diocese of Providence: 163 churches, 601 Mass times, plus confession and adoration hours.
 
