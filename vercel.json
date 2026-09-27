@@ -1,13 +1,4 @@
 {
-  "headers": [
-    {
-      "source": "/garden/:path*",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex"
-        }
-      ]
-    }
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npx eleventy && npx pagefind --site _site"
 }

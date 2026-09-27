@@ -5,7 +5,19 @@ layout: layout.njk
 
 # Blog
 
+<link href="/pagefind/pagefind-component-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-component-ui.js" type="module"></script>
+
+<div class="blog-search">
+<pagefind-input placeholder="Search posts..."></pagefind-input>
+<pagefind-filter-dropdown filter="tags" label="Tag"></pagefind-filter-dropdown>
+<pagefind-summary></pagefind-summary>
+<pagefind-results></pagefind-results>
+</div>
+
 {% if collections.posts | length > 0 %}
+
+## All Posts
 
 {% for post in collections.posts %}
 <article>

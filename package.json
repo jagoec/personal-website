@@ -6,7 +6,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "start": "eleventy --serve",
-    "build": "eleventy",
+    "build": "eleventy && pagefind --site _site",
     "og:image": "node scripts/og-image.js",
     "serve": "eleventy --serve",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -27,6 +27,7 @@
     "@11ty/eleventy": "^3.1.2",
     "markdown-it": "^14.1.1",
     "markdown-it-table-of-contents": "^1.1.0",
+    "pagefind": "^1.5.2",
     "sharp": "^0.35.4"
   },
   "dependencies": {
