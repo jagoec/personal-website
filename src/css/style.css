@@ -205,25 +205,12 @@ main img {
 
 /* Quote of the day */
 .quote-of-the-day {
-  margin-top: 3rem;
-}
-
-.quote-of-the-day blockquote {
-  font-style: italic;
-  color: #586e75;
-}
-
-.quote-of-the-day blockquote::before {
-  content: "\201C";
-}
-
-.quote-of-the-day blockquote::after {
-  content: "\201D";
+  color: #93a1a1;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  text-align: center;
 }
 
 .quote-of-the-day figcaption {
   margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: #93a1a1;
-  text-align: right;
 }
