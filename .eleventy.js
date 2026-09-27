@@ -57,6 +57,10 @@ module.exports = function(eleventyConfig) {
   // Copy images from garden posts
   eleventyConfig.addPassthroughCopy("src/garden/**/*.{jpg,jpeg,png,gif,webp}");
 
+  // Copy robots.txt and og images
+  eleventyConfig.addPassthroughCopy("src/robots.txt");
+  eleventyConfig.addPassthroughCopy("src/img/**/*");
+
   // Add filter to render markdown in templates
   eleventyConfig.addFilter("markdown", (content) => {
     return md.render(content);
@@ -75,6 +79,12 @@ module.exports = function(eleventyConfig) {
       return date;
     }
     return dt.toFormat('MMMM d, yyyy');
+  });
+
+  // Add ISO date filter for sitemap lastmod
+  eleventyConfig.addFilter("isoDate", (date) => {
+    const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : String(date).slice(0, 10);
+    return DateTime.fromISO(dateStr).toISODate();
   });
 
   // Add collection for garden posts
