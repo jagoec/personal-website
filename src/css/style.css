@@ -68,6 +68,15 @@ article {
   margin-bottom: 2rem;
 }
 
+/* Blog list cards */
+.post-card {
+  padding: 1.5rem;
+  border-left: 4px solid #268bd2;
+  background-color: #f5f1e8;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 43, 54, 0.1);
+}
+
 .date {
   color: #93a1a1;
   font-size: 0.9rem;
