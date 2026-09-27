@@ -202,3 +202,32 @@ main img {
 .book .author {
   justify-self: left;
 }
+
+/* Quote of the day */
+.quote-of-the-day {
+  margin-top: 3rem;
+  padding: 1.25rem 1.5rem;
+  border-left: 4px solid #93a1a1;
+  background-color: #fdf6e3;
+  border-radius: 6px;
+}
+
+.quote-of-the-day blockquote {
+  font-style: italic;
+  color: #586e75;
+}
+
+.quote-of-the-day blockquote::before {
+  content: "\201C";
+}
+
+.quote-of-the-day blockquote::after {
+  content: "\201D";
+}
+
+.quote-of-the-day figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #93a1a1;
+  text-align: right;
+}

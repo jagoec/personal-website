@@ -27,6 +27,7 @@ Repo: https://github.com/jagoec/personal-website
 - `vercel.json` — sets the Vercel build command: `npx eleventy && npx pagefind --site _site`.
 - `scripts/og-image.js` + `src/img/og-default.png` — default Open Graph card (Solarized Light); regenerate with `pnpm og:image` and commit the PNG.
 - `src/_data/books.js` — fetches a published Google Sheet as CSV **at build time** (needs network); columns: Title, Author, Finished, Notes. Feeds the Books page.
+- `src/quotes.md` — the quotation list (`permalink: false`, never renders as a page). `src/_data/quotes.js` parses it at build; the home page shows one quote per day (client-side pick by day-of-year, no rebuild needed).
 
 ## Conventions
 
@@ -37,6 +38,7 @@ Repo: https://github.com/jagoec/personal-website
 - Excerpts for posts are auto-extracted from the first paragraph if not set in frontmatter.
 - Per-page SEO overrides via frontmatter: `description:` (falls back to excerpt, then site default) and `image:` (falls back to `/img/og-default.png`).
 - `showStats: true` frontmatter adds an automatic word/character count line to the page (layout.njk + `wordCount`/`charCount` filters in `.eleventy.js`).
+- Quotes format in `src/quotes.md`: one per line as `- "Text" — Author` (em-dash separator; author optional; avoid double quotes inside the text). Editing the file is the only change needed — the widget updates on the next deploy.
 
 ## Deployment
 
