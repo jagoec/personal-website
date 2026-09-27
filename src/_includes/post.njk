@@ -1,0 +1,15 @@
+---
+layout: layout.njk
+---
+<article data-pagefind-body>
+    <header class="post-header">
+        <h1>{{ title }}</h1>
+        <p class="date">{{ date | readableDate }}</p>
+        {% if tags %}
+        <p class="tags">
+            {%- for tag in tags %}<span class="tag" data-pagefind-filter="tags">{{ tag }}</span>{% if not loop.last %} {% endif %}{% endfor -%}
+        </p>
+        {% endif %}
+    </header>
+    {{ content | safe }}
+</article>

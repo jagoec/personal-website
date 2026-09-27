@@ -54,8 +54,8 @@ module.exports = function(eleventyConfig) {
     "src/css/": "/"
   });
 
-  // Copy images from garden posts
-  eleventyConfig.addPassthroughCopy("src/garden/**/*.{jpg,jpeg,png,gif,webp}");
+  // Copy images from blog posts
+  eleventyConfig.addPassthroughCopy("src/blog/**/*.{jpg,jpeg,png,gif,webp}");
 
   // Copy robots.txt and og images
   eleventyConfig.addPassthroughCopy("src/robots.txt");
@@ -102,9 +102,9 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addFilter("wordCount", (html) => visibleText(html).split(" ").length);
   eleventyConfig.addFilter("charCount", (html) => visibleText(html).length);
 
-  // Add collection for garden posts
-  eleventyConfig.addCollection("garden", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("src/garden/*.md").map(item => {
+  // Add collection for blog posts
+  eleventyConfig.addCollection("posts", function(collectionApi) {
+    return collectionApi.getFilteredByGlob("src/blog/*.md").map(item => {
       if (!item.data.excerpt) {
         // Read the file and extract first paragraph
         const filePath = path.join(process.cwd(), item.inputPath);
@@ -113,8 +113,7 @@ module.exports = function(eleventyConfig) {
         const parts = content.split('---');
         const body = parts.length > 2 ? parts.slice(2).join('---').trim() : content;
         const paragraphs = body.split(/\n\n+/);
-        // Assume structure: heading, date, content
-        const excerptPara = paragraphs[2] || paragraphs[1] || paragraphs[0] || '';
+        const excerptPara = paragraphs[0] || '';
         item.data.excerpt = excerptPara.trim();
       }
       return item;
