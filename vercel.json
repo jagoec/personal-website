@@ -1,0 +1,13 @@
+{
+  "headers": [
+    {
+      "source": "/garden/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    }
+  ]
+}
