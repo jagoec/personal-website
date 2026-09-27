@@ -27,16 +27,18 @@ Repo: https://github.com/jagoec/personal-website
 - `vercel.json` — sets the Vercel build command: `npx eleventy && npx pagefind --site _site`.
 - `scripts/og-image.js` + `src/img/og-default.png` — default Open Graph card (Solarized Light); regenerate with `pnpm og:image` and commit the PNG.
 - `src/_data/books.js` — fetches a published Google Sheet as CSV **at build time** (needs network); columns: Title, Author, Finished, Notes. Feeds the Books page.
+- `src/quotes.md` — the quotation list (`permalink: false`, never renders as a page). `src/_data/quotes.js` parses it at build; the home page shows one quote per day (client-side pick by day-of-year, no rebuild needed).
 
 ## Conventions
 
-- Blog posts: `src/blog/<slug>.md` with frontmatter `title`, `date` (YYYY-MM-DD), `layout: post.njk`, and free-form `tags` (e.g. `[garden]`). Dates render with the `readableDate` filter (America/New_York).
+- Blog posts: `src/blog/yyyymmdd_title-slug.md` (files sort chronologically by name). Frontmatter: `title`, `date` (YYYY-MM-DD — **keep in sync with the filename date**), `permalink: /blog/<slug>/` (keeps URLs clean regardless of filename), `layout: post.njk`, and free-form `tags` (e.g. `[garden]`, `[projects]`). Dates render with the `readableDate` filter (America/New_York). The `posts` collection sorts by frontmatter `date`, not filename.
 - Search: Pagefind Component UI on the blog page; only post pages are indexed. The tag filter dropdown populates after the first search interaction (Pagefind behavior without faceted mode).
 - URLs are directory-style: `/about/`, `/blog/<post-slug>/`.
 - The `image` shortcode (`.eleventy.js`) generates optimized responsive WebP/JPEG — it **throws if `alt` text is missing**. Always pass alt text. Post images passthrough-copy from `src/blog/`.
 - Excerpts for posts are auto-extracted from the first paragraph if not set in frontmatter.
 - Per-page SEO overrides via frontmatter: `description:` (falls back to excerpt, then site default) and `image:` (falls back to `/img/og-default.png`).
 - `showStats: true` frontmatter adds an automatic word/character count line to the page (layout.njk + `wordCount`/`charCount` filters in `.eleventy.js`).
+- Quotes format in `src/quotes.md`: one per line as `- "Text" — Author` (em-dash separator; author optional; avoid double quotes inside the text). Editing the file is the only change needed — the widget updates on the next deploy.
 
 ## Deployment
 

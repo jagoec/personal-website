@@ -20,7 +20,7 @@ layout: layout.njk
 ## All Posts
 
 {% for post in collections.posts %}
-<article>
+<article class="post-card">
   <h3><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
   <p class="date">{{ post.data.date | readableDate }}{% if post.data.tags %} — {% for tag in post.data.tags %}<span class="tag">{{ tag }}</span>{% if not loop.last %} {% endif %}{% endfor %}{% endif %}</p>
   {{ post.data.excerpt | markdown | safe }}

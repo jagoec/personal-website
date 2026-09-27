@@ -25,3 +25,7 @@ Currently on: _Mayflower_ by Nathaniel Philbrick
 
 
 {% endfor %}
+
+# Videos
+- [Bp. Barron on Theo Von](https://www.youtube.com/watch?v=tSlDMz2ZrnY)
+- [How to turn a sphere inside out](https://www.youtube.com/watch?v=Zv-XNlE1s8E)

@@ -1,6 +1,7 @@
 ---
 title: "First Garden Update"
 date: 2026-03-15
+permalink: /blog/garden-20260315/
 layout: post.njk
 tags: [garden]
 ---

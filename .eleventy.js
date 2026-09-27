@@ -24,6 +24,18 @@ module.exports = function(eleventyConfig) {
     return defaultImageRenderer(tokens, idx, options, env, self);
   };
 
+  // Open external links in a new tab
+  const defaultLinkRenderer = md.renderer.rules.link_open ||
+    ((tokens, idx, options, env, self) => self.renderToken(tokens, idx, options));
+  md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
+    const href = tokens[idx].attrGet('href') || '';
+    if (href.startsWith('http')) {
+      tokens[idx].attrSet('target', '_blank');
+      tokens[idx].attrSet('rel', 'noopener noreferrer');
+    }
+    return defaultLinkRenderer(tokens, idx, options, env, self);
+  };
+
   eleventyConfig.setLibrary("md", md);
 
   // Image optimization
