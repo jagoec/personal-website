@@ -34,6 +34,7 @@ Repo: https://github.com/jagoec/personal-website
 - The `image` shortcode (`.eleventy.js`) generates optimized responsive WebP/JPEG — it **throws if `alt` text is missing**. Always pass alt text.
 - Excerpts for garden posts are auto-extracted from the first paragraphs if not set in frontmatter.
 - Per-page SEO overrides via frontmatter: `description:` (falls back to excerpt, then site default) and `image:` (falls back to `/img/og-default.png`).
+- `showStats: true` frontmatter adds an automatic word/character count line to the page (layout.njk + `wordCount`/`charCount` filters in `.eleventy.js`).
 
 ## Deployment
 

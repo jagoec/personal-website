@@ -1,6 +1,7 @@
 ---
 title: About
 layout: layout.njk
+showStats: true
 ---
 
 # About This Site

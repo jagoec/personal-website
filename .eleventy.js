@@ -87,6 +87,21 @@ module.exports = function(eleventyConfig) {
     return DateTime.fromISO(dateStr).toISODate();
   });
 
+  // Word/character count filters over visible page text
+  const visibleText = (html) => {
+    return html
+      .replace(/&#(\d+);/g, (m, code) => String.fromCharCode(parseInt(code, 10)))
+      .replace(/&#x([0-9a-fA-F]+);/g, (m, code) => String.fromCharCode(parseInt(code, 16)))
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&quot;/g, '"')
+      .replace(/<[^>]*>/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  };
+  eleventyConfig.addFilter("wordCount", (html) => visibleText(html).split(" ").length);
+  eleventyConfig.addFilter("charCount", (html) => visibleText(html).length);
+
   // Add collection for garden posts
   eleventyConfig.addCollection("garden", function(collectionApi) {
     return collectionApi.getFilteredByGlob("src/garden/*.md").map(item => {
