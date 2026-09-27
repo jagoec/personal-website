@@ -1,6 +1,7 @@
 ---
 title: "Catechism in a Year, Personal App Edition"
 date: 2026-09-20
+permalink: /blog/catechism-in-a-year/
 layout: post.njk
 tags: [projects]
 ---

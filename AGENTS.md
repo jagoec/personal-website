@@ -31,7 +31,7 @@ Repo: https://github.com/jagoec/personal-website
 
 ## Conventions
 
-- Blog posts: `src/blog/<slug>.md` with frontmatter `title`, `date` (YYYY-MM-DD), `layout: post.njk`, and free-form `tags` (e.g. `[garden]`). Dates render with the `readableDate` filter (America/New_York).
+- Blog posts: `src/blog/yyyymmdd_title-slug.md` (files sort chronologically by name). Frontmatter: `title`, `date` (YYYY-MM-DD — **keep in sync with the filename date**), `permalink: /blog/<slug>/` (keeps URLs clean regardless of filename), `layout: post.njk`, and free-form `tags` (e.g. `[garden]`, `[projects]`). Dates render with the `readableDate` filter (America/New_York). The `posts` collection sorts by frontmatter `date`, not filename.
 - Search: Pagefind Component UI on the blog page; only post pages are indexed. The tag filter dropdown populates after the first search interaction (Pagefind behavior without faceted mode).
 - URLs are directory-style: `/about/`, `/blog/<post-slug>/`.
 - The `image` shortcode (`.eleventy.js`) generates optimized responsive WebP/JPEG — it **throws if `alt` text is missing**. Always pass alt text. Post images passthrough-copy from `src/blog/`.

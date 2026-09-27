@@ -1,6 +1,7 @@
 ---
 title: "Mass Aggregator"
 date: 2026-08-07
+permalink: /blog/mass-aggregator/
 layout: post.njk
 tags: [projects]
 ---
