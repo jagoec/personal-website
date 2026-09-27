@@ -4,7 +4,7 @@ layout: layout.njk
 ---
 
 # Books I've Read
-Currently on: _Democracy in America_ by Alexis de Tocqueville
+Currently on: _Mayflower_ by Nathaniel Philbrick
 {% set currentYear = "" %}
 
 {% for book in books|reverse %}
