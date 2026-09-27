@@ -15,4 +15,4 @@ A quick tour of how this website works:
 - **Search-ready** — sitemap.xml, robots.txt, and Open Graph tags (the preview cards you see when sharing a link), with a generated card image, registered with Google Search Console.
 - **Privacy-friendly analytics** — Vercel Web Analytics counts visits without cookies.
 
-Built and maintained with [opencode](https://opencode.ai), an AI coding agent — the repo's AGENTS.md file documents the project so the agent can pick up where we left off.
+Built and maintained with [opencode](https://opencode.ai), an AI coding agent.
