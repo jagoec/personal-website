@@ -27,7 +27,7 @@ Repo: https://github.com/jagoec/personal-website
 - `vercel.json` — sets the Vercel build command: `npx eleventy && npx pagefind --site _site`.
 - `scripts/og-image.js` + `src/img/og-default.png` — default Open Graph card (Solarized Light); regenerate with `pnpm og:image` and commit the PNG.
 - `src/_data/books.js` — fetches a published Google Sheet as CSV **at build time** (needs network); columns: Title, Author, Finished, Notes. Feeds the Books page.
-- `src/quotes.md` — the quotation list (`permalink: false`, never renders as a page). `src/_data/quotes.js` parses it at build; the home page shows one quote per day (client-side pick by day-of-year, no rebuild needed).
+- `src/quotes.md` — the quotation list (`permalink: false`, never renders as a page). `src/_data/quotes.js` parses it at build; the home page shows one quote per day (client-side pick by day-of-year, no rebuild needed). The widget is also a physics toy: `src/js/quote-toy.js` (drag + fling + spring/gravity) with a hidden control panel revealed by the **Konami code** (↑↑↓↓←→←→BA); the panel's default slider values must stay in sync with the `defaults` in `quote-toy.js` (stiffness 170, damping 18). Session-only — no persistence.
 
 ## Conventions
 
