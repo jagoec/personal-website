@@ -30,7 +30,7 @@ You can find me on:
 </script>
 <script defer src="/js/quote-toy.js"></script>
 <div class="toy-panel" hidden>
-  <div class="toy-panel-header">quote toy</div>
+  <div class="toy-panel-header">Control Panel</div>
   <label>stiffness <output data-out="stiffness">170</output>
     <input type="range" name="stiffness" min="20" max="400" value="170">
   </label>
