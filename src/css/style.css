@@ -207,21 +207,33 @@ main img {
   justify-self: left;
 }
 
+/* Draggable toys */
+[data-drag] {
+  position: relative;
+  cursor: grab;
+  touch-action: auto;
+}
+
+[data-drag][data-drag-touch] {
+  touch-action: none;
+}
+
+[data-drag].dragging {
+  z-index: 10;
+  user-select: none;
+  cursor: grabbing;
+}
+
+a[data-drag] {
+  display: inline-block;
+}
+
 /* Quote of the day */
 .quote-of-the-day {
   color: #93a1a1;
   font-size: 0.9rem;
   margin-top: 2rem;
   text-align: center;
-  position: relative;
-  touch-action: none;
-  cursor: grab;
-}
-
-.quote-of-the-day.dragging {
-  z-index: 10;
-  user-select: none;
-  cursor: grabbing;
 }
 
 .quote-of-the-day figcaption {

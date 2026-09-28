@@ -3,7 +3,7 @@ title: Home
 layout: layout.njk
 ---
 
-# Christopher Jagoe
+<h1 data-drag>Christopher Jagoe</h1>
 
 It's been a goal of mine to create a personal website. My goals are to learn something about technology and to create a space for documenting and reflecting on some of my projects.  
 \
@@ -13,7 +13,7 @@ You can find me on:
 - [GitHub](https://github.com/jagoec)
 
 {% if quotes | length > 0 %}
-<figure class="quote-of-the-day" data-drag>
+<figure class="quote-of-the-day" data-drag data-drag-touch>
   <blockquote id="qotd-text">{{ quotes[0].text }}</blockquote>
   <figcaption id="qotd-author">{{ quotes[0].author }}</figcaption>
 </figure>
