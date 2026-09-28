@@ -121,6 +121,10 @@
         if (Math.sqrt(dx * dx + dy * dy) < THRESHOLD) return;
         engaged = true;
         el.classList.add("dragging");
+        if (window.getSelection) {
+          var sel = window.getSelection();
+          if (sel && sel.removeAllRanges) sel.removeAllRanges();
+        }
       }
       x = baseX + dx;
       y = baseY + dy;
@@ -146,6 +150,10 @@
     }
     el.addEventListener("pointerup", release);
     el.addEventListener("pointercancel", release);
+
+    el.addEventListener("dragstart", function (e) {
+      e.preventDefault();
+    });
 
     el.addEventListener("click", function (e) {
       if (suppressClick) {
