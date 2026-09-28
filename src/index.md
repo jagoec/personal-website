@@ -28,19 +28,4 @@ You can find me on:
     document.getElementById("qotd-author").textContent = q.author;
   })();
 </script>
-<script defer src="/js/quote-toy.js"></script>
-<div class="toy-panel" hidden>
-  <div class="toy-panel-header">Control Panel</div>
-  <label>stiffness <output data-out="stiffness">170</output>
-    <input type="range" name="stiffness" min="20" max="400" value="170">
-  </label>
-  <label>damping <output data-out="damping">18</output>
-    <input type="range" name="damping" min="2" max="60" value="18">
-  </label>
-  <label class="toy-check"><input type="checkbox" name="gravity"> gravity</label>
-  <div class="toy-actions">
-    <button type="button" name="reset">reset</button>
-    <button type="button" name="close">close</button>
-  </div>
-</div>
 {% endif %}
