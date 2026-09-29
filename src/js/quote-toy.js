@@ -10,6 +10,13 @@
   var MAX_FLING = 3000;
   var THRESHOLD = 5;
 
+  function store(key, val) {
+    try { sessionStorage.setItem(key, val); } catch (e) {}
+  }
+  function read(key) {
+    try { return sessionStorage.getItem(key); } catch (e) { return null; }
+  }
+
   function makeToy(el) {
     var touchDrag = el.hasAttribute("data-drag-touch");
     var dragging = false;
@@ -170,9 +177,21 @@
 
   document.querySelectorAll("[data-drag]").forEach(makeToy);
 
-  function showPanel() { if (panel) panel.hidden = false; }
-  function hidePanel() { if (panel) panel.hidden = true; }
-  function togglePanel() { if (panel) panel.hidden = !panel.hidden; }
+  function showPanel() {
+    if (!panel) return;
+    panel.hidden = false;
+    store("toyPanel", "1");
+  }
+  function hidePanel() {
+    if (!panel) return;
+    panel.hidden = true;
+    store("toyPanel", "0");
+  }
+  function togglePanel() {
+    if (!panel) return;
+    if (panel.hidden) showPanel();
+    else hidePanel();
+  }
 
   if (panel) {
     var stiffness = panel.querySelector('[name="stiffness"]');
@@ -186,19 +205,30 @@
       dampingOut.textContent = params.damping;
     }
 
+    function saveParams() {
+      store("toyParams", JSON.stringify(params));
+    }
+
+    function resumeToys() {
+      document.querySelectorAll("[data-drag]").forEach(function (el) {
+        el.dispatchEvent(new CustomEvent("toy-resume"));
+      });
+    }
+
     stiffness.addEventListener("input", function () {
       params.stiffness = Number(stiffness.value);
       syncLabels();
+      saveParams();
     });
     damping.addEventListener("input", function () {
       params.damping = Number(damping.value);
       syncLabels();
+      saveParams();
     });
     gravity.addEventListener("change", function () {
       params.gravity = gravity.checked;
-      document.querySelectorAll("[data-drag]").forEach(function (el) {
-        el.dispatchEvent(new CustomEvent("toy-resume"));
-      });
+      saveParams();
+      resumeToys();
     });
     panel.querySelector('[name="reset"]').addEventListener("click", function () {
       params.stiffness = defaults.stiffness;
@@ -208,12 +238,27 @@
       damping.value = defaults.damping;
       gravity.checked = false;
       syncLabels();
-      document.querySelectorAll("[data-drag]").forEach(function (el) {
-        el.dispatchEvent(new CustomEvent("toy-resume"));
-      });
+      saveParams();
+      resumeToys();
     });
     panel.querySelector('[name="close"]').addEventListener("click", hidePanel);
+
+    if (read("toyPanel") === "1") panel.hidden = false;
+
+    var saved = read("toyParams");
+    if (saved) {
+      try {
+        var p = JSON.parse(saved);
+        if (typeof p.stiffness === "number") params.stiffness = p.stiffness;
+        if (typeof p.damping === "number") params.damping = p.damping;
+        if (typeof p.gravity === "boolean") params.gravity = p.gravity;
+      } catch (e) {}
+    }
+    stiffness.value = params.stiffness;
+    damping.value = params.damping;
+    gravity.checked = params.gravity;
     syncLabels();
+    if (params.gravity) resumeToys();
   }
 
   var CODE = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "KeyB", "KeyA"];
@@ -235,6 +280,17 @@
   if (panel) {
     var handle = panel.querySelector(".toy-panel-header");
     var pd = false, px = 0, py = 0, tx = 0, ty = 0;
+    var savedPos = read("toyPanelPos");
+    if (savedPos) {
+      try {
+        var sp = JSON.parse(savedPos);
+        if (typeof sp.x === "number" && typeof sp.y === "number") {
+          tx = sp.x;
+          ty = sp.y;
+          panel.style.transform = "translate(" + tx + "px," + ty + "px)";
+        }
+      } catch (e) {}
+    }
     handle.addEventListener("pointerdown", function (e) {
       pd = true;
       px = e.clientX;
@@ -249,7 +305,10 @@
       py = e.clientY;
       panel.style.transform = "translate(" + tx + "px," + ty + "px)";
     });
-    function panelUp() { pd = false; }
+    function panelUp() {
+      pd = false;
+      store("toyPanelPos", JSON.stringify({ x: tx, y: ty }));
+    }
     handle.addEventListener("pointerup", panelUp);
     handle.addEventListener("pointercancel", panelUp);
   }
