@@ -207,6 +207,27 @@ main img {
   justify-self: left;
 }
 
+/* Draggable toys */
+[data-drag] {
+  position: relative;
+  cursor: grab;
+  touch-action: auto;
+}
+
+[data-drag][data-drag-touch] {
+  touch-action: none;
+}
+
+[data-drag].dragging {
+  z-index: 10;
+  user-select: none;
+  cursor: grabbing;
+}
+
+a[data-drag] {
+  display: inline-block;
+}
+
 /* Quote of the day */
 .quote-of-the-day {
   color: #93a1a1;
@@ -217,4 +238,74 @@ main img {
 
 .quote-of-the-day figcaption {
   margin-top: 0.5rem;
+}
+
+/* Quote toy control panel */
+.toy-panel {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 20;
+  width: 240px;
+  padding: 0.75rem 1.25rem 1.25rem;
+  border-left: 4px solid #268bd2;
+  background-color: #eee8d5;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 43, 54, 0.15);
+  font-size: 0.9rem;
+  color: #586e75;
+  touch-action: none;
+}
+
+.toy-panel:not([hidden]) {
+  animation: toy-in 0.2s ease-out;
+}
+
+@keyframes toy-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+
+.toy-panel-header {
+  font-weight: 600;
+  color: #073642;
+  cursor: grab;
+  margin-bottom: 0.5rem;
+}
+
+.toy-panel label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.toy-panel output {
+  color: #93a1a1;
+  float: right;
+}
+
+.toy-panel input[type="range"] {
+  width: 100%;
+  accent-color: #268bd2;
+  margin-top: 0.25rem;
+}
+
+.toy-panel .toy-check {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.toy-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+}
+
+.toy-panel button {
+  background-color: #f5f1e8;
+  border: 1px solid #93a1a1;
+  border-radius: 4px;
+  color: #073642;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.7rem;
+  cursor: pointer;
 }

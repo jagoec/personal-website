@@ -73,6 +73,9 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/robots.txt");
   eleventyConfig.addPassthroughCopy("src/img/**/*");
 
+  // Copy client-side scripts
+  eleventyConfig.addPassthroughCopy("src/js/**/*");
+
   // Add filter to render markdown in templates
   eleventyConfig.addFilter("markdown", (content) => {
     return md.render(content);

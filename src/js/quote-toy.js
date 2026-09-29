@@ -1,0 +1,315 @@
+(function () {
+  var panel = document.querySelector(".toy-panel");
+
+  var defaults = { stiffness: 170, damping: 18, gravity: false };
+  var params = { stiffness: defaults.stiffness, damping: defaults.damping, gravity: defaults.gravity };
+
+  var GRAVITY = 3000;
+  var RESTITUTION = 0.35;
+  var FLOOR_FRICTION = 0.7;
+  var MAX_FLING = 3000;
+  var THRESHOLD = 5;
+
+  function store(key, val) {
+    try { sessionStorage.setItem(key, val); } catch (e) {}
+  }
+  function read(key) {
+    try { return sessionStorage.getItem(key); } catch (e) { return null; }
+  }
+
+  function makeToy(el) {
+    var touchDrag = el.hasAttribute("data-drag-touch");
+    var dragging = false;
+    var engaged = false;
+    var suppressClick = false;
+    var startX = 0, startY = 0;
+    var baseX = 0, baseY = 0;
+    var x = 0, y = 0, vx = 0, vy = 0;
+    var lastT = 0;
+    var rafId = null;
+    var history = [];
+
+    function applyTransform() {
+      el.style.transform = "translate(" + x + "px," + y + "px)";
+    }
+
+    function stopLoop() {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    }
+
+    function startLoop() {
+      stopLoop();
+      lastT = performance.now();
+      rafId = requestAnimationFrame(step);
+    }
+
+    function step(t) {
+      rafId = null;
+      var dt = Math.min((t - lastT) / 1000, 0.032);
+      lastT = t;
+
+      if (params.gravity) {
+        vy += GRAVITY * dt;
+        vx -= vx * 0.8 * dt;
+      } else {
+        vx += (-params.stiffness * x - params.damping * vx) * dt;
+        vy += (-params.stiffness * y - params.damping * vy) * dt;
+      }
+      x += vx * dt;
+      y += vy * dt;
+      applyTransform();
+
+      if (params.gravity) {
+        var rect = el.getBoundingClientRect();
+        if (rect.bottom > window.innerHeight) {
+          y -= rect.bottom - window.innerHeight;
+          applyTransform();
+          vy = Math.abs(vy) > 80 ? -vy * RESTITUTION : 0;
+          vx *= FLOOR_FRICTION;
+        }
+      }
+
+      var offset = Math.sqrt(x * x + y * y);
+      var speed = Math.sqrt(vx * vx + vy * vy);
+      if (params.gravity ? speed < 2 : offset < 0.5 && speed < 8) {
+        if (!params.gravity) {
+          x = 0; y = 0;
+          applyTransform();
+        }
+        vx = 0; vy = 0;
+        return;
+      }
+      rafId = requestAnimationFrame(step);
+    }
+
+    function flingVelocity() {
+      var cutoff = performance.now() - 120;
+      var old = history[0];
+      for (var i = 0; i < history.length; i++) {
+        if (history[i].t >= cutoff) { old = history[i]; break; }
+      }
+      if (!old || history.length < 2) return { x: 0, y: 0 };
+      var last = history[history.length - 1];
+      var dt = (last.t - old.t) / 1000;
+      if (dt <= 0) return { x: 0, y: 0 };
+      var fx = (last.x - old.x) / dt;
+      var fy = (last.y - old.y) / dt;
+      var mag = Math.sqrt(fx * fx + fy * fy);
+      if (mag > MAX_FLING) {
+        fx = fx / mag * MAX_FLING;
+        fy = fy / mag * MAX_FLING;
+      }
+      return { x: fx, y: fy };
+    }
+
+    el.addEventListener("pointerdown", function (e) {
+      if (!touchDrag && e.pointerType === "touch") return;
+      stopLoop();
+      dragging = true;
+      engaged = false;
+      suppressClick = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      baseX = x;
+      baseY = y;
+      vx = 0; vy = 0;
+      history = [{ t: performance.now(), x: x, y: y }];
+      el.setPointerCapture(e.pointerId);
+    });
+
+    el.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - startX;
+      var dy = e.clientY - startY;
+      if (!engaged) {
+        if (Math.sqrt(dx * dx + dy * dy) < THRESHOLD) return;
+        engaged = true;
+        el.classList.add("dragging");
+        if (window.getSelection) {
+          var sel = window.getSelection();
+          if (sel && sel.removeAllRanges) sel.removeAllRanges();
+        }
+      }
+      x = baseX + dx;
+      y = baseY + dy;
+      applyTransform();
+      history.push({ t: performance.now(), x: x, y: y });
+      while (history.length > 2 && history[0].t < performance.now() - 150) history.shift();
+    });
+
+    function release(e) {
+      if (!dragging) return;
+      dragging = false;
+      if (engaged) {
+        if (e && e.pointerId !== undefined && el.hasPointerCapture && el.hasPointerCapture(e.pointerId)) {
+          el.releasePointerCapture(e.pointerId);
+        }
+        el.classList.remove("dragging");
+        suppressClick = true;
+        var f = flingVelocity();
+        vx = f.x;
+        vy = f.y;
+        startLoop();
+      }
+    }
+    el.addEventListener("pointerup", release);
+    el.addEventListener("pointercancel", release);
+
+    el.addEventListener("dragstart", function (e) {
+      e.preventDefault();
+    });
+
+    el.addEventListener("click", function (e) {
+      if (suppressClick) {
+        suppressClick = false;
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, true);
+
+    el.addEventListener("toy-resume", function () {
+      if (!dragging) startLoop();
+    });
+  }
+
+  document.querySelectorAll("[data-drag]").forEach(makeToy);
+
+  function showPanel() {
+    if (!panel) return;
+    panel.hidden = false;
+    store("toyPanel", "1");
+  }
+  function hidePanel() {
+    if (!panel) return;
+    panel.hidden = true;
+    store("toyPanel", "0");
+  }
+  function togglePanel() {
+    if (!panel) return;
+    if (panel.hidden) showPanel();
+    else hidePanel();
+  }
+
+  if (panel) {
+    var stiffness = panel.querySelector('[name="stiffness"]');
+    var damping = panel.querySelector('[name="damping"]');
+    var gravity = panel.querySelector('[name="gravity"]');
+    var stiffnessOut = panel.querySelector('[data-out="stiffness"]');
+    var dampingOut = panel.querySelector('[data-out="damping"]');
+
+    function syncLabels() {
+      stiffnessOut.textContent = params.stiffness;
+      dampingOut.textContent = params.damping;
+    }
+
+    function saveParams() {
+      store("toyParams", JSON.stringify(params));
+    }
+
+    function resumeToys() {
+      document.querySelectorAll("[data-drag]").forEach(function (el) {
+        el.dispatchEvent(new CustomEvent("toy-resume"));
+      });
+    }
+
+    stiffness.addEventListener("input", function () {
+      params.stiffness = Number(stiffness.value);
+      syncLabels();
+      saveParams();
+    });
+    damping.addEventListener("input", function () {
+      params.damping = Number(damping.value);
+      syncLabels();
+      saveParams();
+    });
+    gravity.addEventListener("change", function () {
+      params.gravity = gravity.checked;
+      saveParams();
+      resumeToys();
+    });
+    panel.querySelector('[name="reset"]').addEventListener("click", function () {
+      params.stiffness = defaults.stiffness;
+      params.damping = defaults.damping;
+      params.gravity = defaults.gravity;
+      stiffness.value = defaults.stiffness;
+      damping.value = defaults.damping;
+      gravity.checked = false;
+      syncLabels();
+      saveParams();
+      resumeToys();
+    });
+    panel.querySelector('[name="close"]').addEventListener("click", hidePanel);
+
+    if (read("toyPanel") === "1") panel.hidden = false;
+
+    var saved = read("toyParams");
+    if (saved) {
+      try {
+        var p = JSON.parse(saved);
+        if (typeof p.stiffness === "number") params.stiffness = p.stiffness;
+        if (typeof p.damping === "number") params.damping = p.damping;
+        if (typeof p.gravity === "boolean") params.gravity = p.gravity;
+      } catch (e) {}
+    }
+    stiffness.value = params.stiffness;
+    damping.value = params.damping;
+    gravity.checked = params.gravity;
+    syncLabels();
+    if (params.gravity) resumeToys();
+  }
+
+  var CODE = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "KeyB", "KeyA"];
+  var ki = 0;
+  document.addEventListener("keydown", function (e) {
+    var tag = e.target && e.target.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+    if (e.code === CODE[ki]) {
+      ki++;
+      if (ki === CODE.length) {
+        ki = 0;
+        togglePanel();
+      }
+    } else {
+      ki = e.code === CODE[0] ? 1 : 0;
+    }
+  });
+
+  if (panel) {
+    var handle = panel.querySelector(".toy-panel-header");
+    var pd = false, px = 0, py = 0, tx = 0, ty = 0;
+    var savedPos = read("toyPanelPos");
+    if (savedPos) {
+      try {
+        var sp = JSON.parse(savedPos);
+        if (typeof sp.x === "number" && typeof sp.y === "number") {
+          tx = sp.x;
+          ty = sp.y;
+          panel.style.transform = "translate(" + tx + "px," + ty + "px)";
+        }
+      } catch (e) {}
+    }
+    handle.addEventListener("pointerdown", function (e) {
+      pd = true;
+      px = e.clientX;
+      py = e.clientY;
+      handle.setPointerCapture(e.pointerId);
+    });
+    handle.addEventListener("pointermove", function (e) {
+      if (!pd) return;
+      tx += e.clientX - px;
+      ty += e.clientY - py;
+      px = e.clientX;
+      py = e.clientY;
+      panel.style.transform = "translate(" + tx + "px," + ty + "px)";
+    });
+    function panelUp() {
+      pd = false;
+      store("toyPanelPos", JSON.stringify({ x: tx, y: ty }));
+    }
+    handle.addEventListener("pointerup", panelUp);
+    handle.addEventListener("pointercancel", panelUp);
+  }
+})();
