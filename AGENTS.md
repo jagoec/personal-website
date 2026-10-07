@@ -44,7 +44,7 @@ Repo: https://github.com/jagoec/personal-website
 ## Deployment
 
 - Vercel hosts the site (static output from `_site/`). Pushing to `master` on GitHub triggers a production deploy; PRs get preview deploys (check the PR comments for the preview URL).
-- Production URL: https://christopherjagoe.com
+- Canonical host: **https://www.christopherjagoe.com** — the bare apex `christopherjagoe.com` 307-redirects to www via Vercel *by design*; do not flip it back. All canonical tags, og:urls, sitemap URLs, and the robots.txt Sitemap line point at www URLs via `src/_data/site.js`.
 
 ## Workflow preference (IMPORTANT)
 
